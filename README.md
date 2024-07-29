@@ -1,7 +1,5 @@
 Hi README Content
 
-markdown
-
 
 # E-commerce API
 
