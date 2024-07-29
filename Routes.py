@@ -4,8 +4,6 @@ from schemas import customer_schema, customer_account_schema, product_schema, pr
 from datetime import datetime
 
 #routes/__init__.py
-
-
 from flask import Blueprint
 
 customer_bp = Blueprint('customer_bp', __name__)
@@ -16,49 +14,59 @@ order_bp = Blueprint('order_bp', __name__)
 from . import customer_routes, customer_account_routes, product_routes, order_routes
 
 # Customer Routes
-customer_bp = Blueprint('customer_bp', __name__)
 @customer_bp.route('/', methods=['POST'])
 def add_customer():
-    # Implementation
+    pass  # Implementation
+
 @customer_bp.route('/<int:customer_id>', methods=['GET', 'PUT', 'DELETE'])
 def handle_customer(customer_id):
-    # Implementation
+    pass  # Implementation
 
 # Customer Account Routes
-customer_account_bp = Blueprint('customer_account_bp', __name__)
 @customer_account_bp.route('/', methods=['POST'])
 def add_customer_account():
-    # Implementation
+    pass  # Implementation
+
 @customer_account_bp.route('/<int:account_id>', methods=['GET', 'PUT', 'DELETE'])
 def handle_customer_account(account_id):
-    # Implementation
+    pass  # Implementation
 
 # Product Routes
-product_bp = Blueprint('product_bp', __name__)
 @product_bp.route('/', methods=['POST', 'GET'])
 def handle_products():
-    # Implementation
+    pass  # Implementation
+
 @product_bp.route('/<int:product_id>', methods=['GET', 'PUT', 'DELETE'])
 def handle_product(product_id):
-    # Implementation
+    pass  # Implementation
 
 # Order Routes
-order_bp = Blueprint('order_bp', __name__)
 @order_bp.route('/', methods=['POST'])
 def place_order():
-    # Implementation
+    pass  # Implementation
+
 @order_bp.route('/<int:order_id>', methods=['GET'])
 def get_order(order_id):
-    # Implementation
+    pass  # Implementation
+
+@order_bp.route('/orders', methods=['GET'])
+def get_orders():
+    try:
+        orders = Order.query.all()
+        result = orders_schema.dump(orders)
+        return jsonify(result)
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # Order Item Routes
 order_item_bp = Blueprint('order_item_bp', __name__)
 @order_item_bp.route('/', methods=['POST'])
 def add_order_item():
-    # Implementation
+    pass  # Implementation
+
 @order_item_bp.route('/<int:order_item_id>', methods=['GET', 'PUT', 'DELETE'])
 def handle_order_item(order_item_id):
-    # Implementation
+    pass  # Implementation
 
 # Main App
 from flask import Flask
@@ -74,3 +82,10 @@ register_routes(app)
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+def register_routes(app):
+    app.register_blueprint(customer_bp)
+    app.register_blueprint(customer_account_bp)
+    app.register_blueprint(product_bp)
+    app.register_blueprint(order_bp)
+    app.register_blueprint(order_item_bp)
