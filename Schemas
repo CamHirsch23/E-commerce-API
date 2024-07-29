@@ -1,0 +1,16 @@
+# Schemas
+class CustomerSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Customer
+
+class CustomerAccountSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = CustomerAccount
+
+class ProductSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Product
+
+class OrderSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Order
