@@ -14,3 +14,12 @@ class ProductSchema(ma.SQLAlchemyAutoSchema):
 class OrderSchema(ma.SQLAlchemyAutoSchema):
     class Meta:
         model = Order
+# Instances of schemas
+customer_schema = CustomerSchema()
+customers_schema = CustomerSchema(many=True)
+customer_account_schema = CustomerAccountSchema()
+customer_accounts_schema = CustomerAccountSchema(many=True)
+product_schema = ProductSchema()
+products_schema = ProductSchema(many=True)
+order_schema = OrderSchema()
+orders_schema = OrderSchema(many=True)
