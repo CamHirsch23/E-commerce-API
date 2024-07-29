@@ -1,14 +1,11 @@
 #models/__init__.py
 
-python
-
 
 from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
-models/customer.py
 
-python
+#models/customer.py
 
 
 from . import db
@@ -20,8 +17,6 @@ class Customer(db.Model):
     phone = db.Column(db.String(20), nullable=False)
 
 #models/customer_account.py
-
-python
 
 
 from . import db
@@ -36,8 +31,6 @@ class CustomerAccount(db.Model):
 
 #models/product.py
 
-python
-
 
 from . import db
 
@@ -48,8 +41,6 @@ class Product(db.Model):
     stock = db.Column(db.Integer, nullable=False)
 
 #models/order.py
-
-python
 
 
 from . import db
@@ -62,8 +53,6 @@ class Order(db.Model):
     customer = db.relationship('Customer', backref=db.backref('orders', lazy=True))
 
 #models/order_item.py
-
-python
 
 
 from . import db
