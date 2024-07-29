@@ -3,6 +3,18 @@ from models import db, Customer, CustomerAccount, Product, Order, OrderItem
 from schemas import customer_schema, customer_account_schema, product_schema, products_schema, order_schema, order_item_schema
 from datetime import datetime
 
+#routes/__init__.py
+
+
+from flask import Blueprint
+
+customer_bp = Blueprint('customer_bp', __name__)
+customer_account_bp = Blueprint('customer_account_bp', __name__)
+product_bp = Blueprint('product_bp', __name__)
+order_bp = Blueprint('order_bp', __name__)
+
+from . import customer_routes, customer_account_routes, product_routes, order_routes
+
 # Customer Routes
 customer_bp = Blueprint('customer_bp', __name__)
 @customer_bp.route('/', methods=['POST'])
