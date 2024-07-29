@@ -1,26 +1,17 @@
-#models/__init__.py
-
-
+from flask import Flask, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
 
-db = SQLAlchemy()
-
-#models/customer.py
-
-
-from . import db
+app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'  # Use your actual Database URI
+db = SQLAlchemy(app)
+ma = Marshmallow(app)
 
 class Customer(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     email = db.Column(db.String(100), unique=True, nullable=False)
     phone = db.Column(db.String(20), nullable=False)
-
-#models/customer_account.py
-
-
-from . import db
-from .customer import Customer
 
 class CustomerAccount(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -29,35 +20,17 @@ class CustomerAccount(db.Model):
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     customer = db.relationship('Customer', backref=db.backref('accounts', lazy=True))
 
-#models/product.py
-
-
-from . import db
-
 class Product(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     price = db.Column(db.Float, nullable=False)
     stock = db.Column(db.Integer, nullable=False)
 
-#models/order.py
-
-
-from . import db
-from .customer import Customer
-
 class Order(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     order_date = db.Column(db.DateTime, nullable=False)
     customer_id = db.Column(db.Integer, db.ForeignKey('customer.id'), nullable=False)
     customer = db.relationship('Customer', backref=db.backref('orders', lazy=True))
-
-#models/order_item.py
-
-
-from . import db
-from .order import Order
-from .product import Product
 
 class OrderItem(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -66,3 +39,23 @@ class OrderItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     order = db.relationship('Order', backref=db.backref('items', lazy=True))
     product = db.relationship('Product', backref=db.backref('order_items', lazy=True))
+
+class OrderSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        model = Order
+        load_instance = True
+
+order_schema = OrderSchema()
+orders_schema = OrderSchema(many=True)
+
+@app.route('/orders', methods=['GET'])
+def get_orders():
+    try:
+        orders = Order.query.all()
+        return jsonify(orders_schema.dump(orders))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 400
+
+if __name__ == '__main__':
+    db.create_all()  # Create database tables
+    app.run(debug=True)
